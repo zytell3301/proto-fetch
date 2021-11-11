@@ -13,6 +13,8 @@ type Config struct {
 	owner      string
 	repository string
 	token      string
+	protoFiles []string
+	output     string
 }
 
 func main() {
@@ -55,5 +57,7 @@ func loadConfigs() (Config, error) {
 		owner:      cfg.GetString("repository-owner"),
 		repository: cfg.GetString("repository"),
 		token:      cfg.GetString("auth-token"),
+		protoFiles: cfg.GetStringSlice("files"),
+		output: cfg.GetString("output-dir"),
 	}, nil
 }
