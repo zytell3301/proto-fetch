@@ -6,6 +6,8 @@ import (
 	"github.com/google/go-github/v40/github"
 	"github.com/spf13/viper"
 	"golang.org/x/oauth2"
+	"io/fs"
+	"io/ioutil"
 )
 
 type Config struct {
@@ -39,6 +41,22 @@ func main() {
 		})
 		client = github.NewClient(oauth2.NewClient(ctx, src))
 	}
+
+	for _, file := range configs.protoFiles {
+		protofile, _, _, err := client.Repositories.GetContents(ctx, configs.owner, configs.repository, file, &github.RepositoryContentGetOptions{})
+		switch err != nil {
+		case true:
+			fmt.Printf("An error occurred while fetching a proto file. Error %v\n", err)
+			return
+		}
+
+		content, _ := protofile.GetContent()
+		switch err != nil {
+		case true:
+			fmt.Printf("An error occurred while reading a proto file. Error: %v\n", err)
+		}
+		ioutil.WriteFile(configs.output+*protofile.Name, []byte(content), fs.ModePerm)
+	}
 }
 
 func loadConfigs() (Config, error) {
@@ -58,6 +76,6 @@ func loadConfigs() (Config, error) {
 		repository: cfg.GetString("repository"),
 		token:      cfg.GetString("auth-token"),
 		protoFiles: cfg.GetStringSlice("files"),
-		output: cfg.GetString("output-dir"),
+		output:     cfg.GetString("output-dir"),
 	}, nil
 }
