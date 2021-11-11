@@ -7,6 +7,7 @@ import (
 
 type Config struct {
 	repository string
+	token      string
 }
 
 func main() {
