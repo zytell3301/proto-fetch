@@ -1,13 +1,22 @@
 package main
 
-import "github.com/spf13/viper"
+import (
+	"fmt"
+	"github.com/spf13/viper"
+)
 
 type Config struct {
 	repository string
 }
 
 func main() {
+	configs, err := loadConfigs()
 
+	switch err != nil {
+	case true:
+		fmt.Printf("An error occurred while reading configs. Error: %v\n", err)
+		return
+	}
 }
 
 func loadConfigs() (Config,error){
