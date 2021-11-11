@@ -9,6 +9,8 @@ import (
 )
 
 type Config struct {
+	baseurl    string
+	owner      string
 	repository string
 	token      string
 }
