@@ -44,6 +44,9 @@ func loadConfigs() (Config, error) {
 	}
 
 	return Config{
+		baseurl:    cfg.GetString("base-url"),
+		owner:      cfg.GetString("repository-owner"),
 		repository: cfg.GetString("repository"),
+		token:      cfg.GetString("auth-token"),
 	}, nil
 }
