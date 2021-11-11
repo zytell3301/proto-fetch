@@ -19,7 +19,7 @@ func main() {
 	}
 }
 
-func loadConfigs() (Config,error){
+func loadConfigs() (Config, error) {
 	cfg := viper.New()
 	cfg.SetConfigName("proto-fetch")
 	cfg.SetConfigType("yaml")
@@ -27,7 +27,7 @@ func loadConfigs() (Config,error){
 	err := cfg.ReadInConfig()
 	switch err != nil {
 	case true:
-		return Config{},err
+		return Config{}, err
 	}
 
 	return Config{
