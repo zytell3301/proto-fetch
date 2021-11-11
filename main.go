@@ -25,11 +25,18 @@ func main() {
 		return
 	}
 
-	src := oauth2.StaticTokenSource(&oauth2.Token{
-		AccessToken: configs.token,
-	})
-	httpClient := oauth2.NewClient(ctx, src)
-	client := github.NewClient(httpClient)
+	var client *github.Client
+
+	switch configs.token == "" {
+	case true:
+		client = github.NewClient(nil)
+		break
+	default:
+		src := oauth2.StaticTokenSource(&oauth2.Token{
+			AccessToken: configs.token,
+		})
+		client = github.NewClient(oauth2.NewClient(ctx, src))
+	}
 }
 
 func loadConfigs() (Config, error) {
