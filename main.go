@@ -102,6 +102,7 @@ func loadConfigs() (Config, error) {
 
 func executeCommands(commands []string) {
 	for _, cmd := range commands {
+		cmd = fillVariablePlaceHolders(cmd)
 		command := strings.SplitN(cmd, " ", 2)
 		out := make([]byte, 0)
 		switch len(command) == 1 {
