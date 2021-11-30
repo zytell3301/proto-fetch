@@ -99,24 +99,13 @@ func executeCommands(commands []string) {
 	for _, cmd := range commands {
 		command := strings.SplitN(cmd, " ", 2)
 		out := make([]byte, 0)
-		var err error
 		switch len(command) == 1 {
 		case true:
-			out, err = exec.Command(command[0]).Output()
+			out, _ = exec.Command(command[0]).Output()
 			break
 		default:
-			out, err = exec.Command(command[0], command[1]).Output()
+			out, _ = exec.Command(command[0], command[1]).Output()
 		}
-		//switch err != nil {
-		//case true:
-		//	fmt.Printf("An error occured while executing commands. Error message: %v \n", err)
-		//	return
-		//	break
-		//default:
-		//	fmt.Printf(string(out))
-		//	fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
-		//}
-		_ = err
 		fmt.Println(string(out))
 	}
 }
