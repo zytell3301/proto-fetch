@@ -13,14 +13,15 @@ import (
 )
 
 type Config struct {
-	baseurl             string
-	owner               string
-	repository          string
-	token               string
-	protoFiles          []string
-	output              string
-	afterFetchCommands  []string
-	beforeFetchCommands []string
+	baseurl                string
+	owner                  string
+	repository             string
+	token                  string
+	protoFiles             []string
+	output                 string
+	afterFetchCommands     []string
+	beforeFetchCommands    []string
+	environmentalVariables []string
 }
 
 func main() {
@@ -84,14 +85,15 @@ func loadConfigs() (Config, error) {
 	}
 
 	return Config{
-		baseurl:             cfg.GetString("base-url"),
-		owner:               cfg.GetString("repository-owner"),
-		repository:          cfg.GetString("repository"),
-		token:               cfg.GetString("auth-token"),
-		protoFiles:          cfg.GetStringSlice("files"),
-		output:              cfg.GetString("output-dir"),
-		beforeFetchCommands: cfg.GetStringSlice("before-fetch-commands"),
-		afterFetchCommands:  cfg.GetStringSlice("after-fetch-commands"),
+		baseurl:                cfg.GetString("base-url"),
+		owner:                  cfg.GetString("repository-owner"),
+		repository:             cfg.GetString("repository"),
+		token:                  cfg.GetString("auth-token"),
+		protoFiles:             cfg.GetStringSlice("files"),
+		output:                 cfg.GetString("output-dir"),
+		beforeFetchCommands:    cfg.GetStringSlice("before-fetch-commands"),
+		afterFetchCommands:     cfg.GetStringSlice("after-fetch-commands"),
+		environmentalVariables: cfg.GetStringSlice("env-variables"),
 	}, nil
 }
 
