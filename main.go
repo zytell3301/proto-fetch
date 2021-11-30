@@ -128,7 +128,7 @@ func parseVariables(configs *Config) {
 
 func fillVariablePlaceHolders(expression string) string {
 	for key, value := range environmentalVariables {
-		expression = strings.ReplaceAll(expression, "$"+key, value)
+		expression = strings.ReplaceAll(expression, key, value)
 	}
 	return expression
 }
