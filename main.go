@@ -24,9 +24,12 @@ type Config struct {
 	environmentalVariables []string
 }
 
+var environmentalVariables map[string]string
+
 func main() {
 	configs, err := loadConfigs()
 	ctx := context.Background()
+	parseVariables(&configs)
 
 	switch err != nil {
 	case true:
@@ -110,4 +113,14 @@ func executeCommands(commands []string) {
 		}
 		fmt.Println(string(out))
 	}
+}
+
+func parseVariables(configs *Config) {
+	variables := make(map[string]string)
+	for _, variable := range configs.environmentalVariables {
+		keyPair := strings.SplitN(variable, "=", 2)
+		variables[keyPair[0]] = keyPair[1]
+	}
+
+	environmentalVariables = variables
 }
