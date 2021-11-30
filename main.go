@@ -107,14 +107,16 @@ func executeCommands(commands []string) {
 		default:
 			out, err = exec.Command(command[0], command[1]).Output()
 		}
-		switch err != nil {
-		case true:
-			fmt.Printf("An error occured while executing commands. Error message: %v \n", err)
-			return
-			break
-		default:
-			fmt.Printf(string(out))
-			fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
-		}
+		//switch err != nil {
+		//case true:
+		//	fmt.Printf("An error occured while executing commands. Error message: %v \n", err)
+		//	return
+		//	break
+		//default:
+		//	fmt.Printf(string(out))
+		//	fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
+		//}
+		_ = err
+		fmt.Println(string(out))
 	}
 }
