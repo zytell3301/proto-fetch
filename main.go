@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/viper"
 	"golang.org/x/oauth2"
 	"io/fs"
-	"io/ioutil"
+	"os"
 )
 
 type Config struct {
@@ -55,7 +55,12 @@ func main() {
 		case true:
 			fmt.Printf("An error occurred while reading a proto file. Error: %v\n", err)
 		}
-		ioutil.WriteFile(configs.output+*protofile.Name, []byte(content), fs.ModePerm)
+		err = os.MkdirAll(configs.output, fs.ModePerm)
+		os.WriteFile(configs.output+*protofile.Name, []byte(content),fs.ModePerm)
+		switch err != nil {
+		case true:
+			fmt.Printf("An error occurred while creating files. Error: %v\n", err)
+		}
 	}
 }
 
