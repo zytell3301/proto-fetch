@@ -30,6 +30,7 @@ func main() {
 	configs, err := loadConfigs()
 	ctx := context.Background()
 	parseVariables(&configs)
+	configs.output = fillVariablePlaceHolders(configs.output)
 
 	switch err != nil {
 	case true:
