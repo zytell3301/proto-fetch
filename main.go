@@ -17,7 +17,7 @@ type Config struct {
 	owner                  string
 	repository             string
 	token                  string
-	protoFiles             []string
+	protoFiles             []File
 	output                 string
 	afterFetchCommands     []string
 	beforeFetchCommands    []string
@@ -34,7 +34,6 @@ var environmentalVariables map[string]string
 func main() {
 	configs, err := loadConfigs()
 	ctx := context.Background()
-	parseVariables(&configs)
 	configs.output = fillVariablePlaceHolders(configs.output)
 
 	switch err != nil {
@@ -59,7 +58,7 @@ func main() {
 	executeCommands(configs.beforeFetchCommands)
 
 	for _, file := range configs.protoFiles {
-		protofile, _, _, err := client.Repositories.GetContents(ctx, configs.owner, configs.repository, file, &github.RepositoryContentGetOptions{})
+		protofile, _, _, err := client.Repositories.GetContents(ctx, configs.owner, configs.repository, file.name, &github.RepositoryContentGetOptions{})
 		switch err != nil {
 		case true:
 			fmt.Printf("An error occurred while fetching a proto file. Error %v\n", err)
@@ -71,8 +70,8 @@ func main() {
 		case true:
 			fmt.Printf("An error occurred while reading a proto file. Error: %v\n", err)
 		}
-		err = os.MkdirAll(configs.output, fs.ModePerm)
-		os.WriteFile(configs.output+*protofile.Name, []byte(content), fs.ModePerm)
+		err = os.MkdirAll(file.destination, fs.ModePerm)
+		err = os.WriteFile(file.destination+*protofile.Name, []byte(content), fs.ModePerm)
 		switch err != nil {
 		case true:
 			fmt.Printf("An error occurred while creating files. Error: %v\n", err)
@@ -93,17 +92,33 @@ func loadConfigs() (Config, error) {
 		return Config{}, err
 	}
 
-	return Config{
+	configs := Config {
 		baseurl:                cfg.GetString("base-url"),
 		owner:                  cfg.GetString("repository-owner"),
 		repository:             cfg.GetString("repository"),
 		token:                  cfg.GetString("auth-token"),
-		protoFiles:             cfg.GetStringSlice("files"),
 		output:                 cfg.GetString("output-dir"),
 		beforeFetchCommands:    cfg.GetStringSlice("before-fetch-commands"),
 		afterFetchCommands:     cfg.GetStringSlice("after-fetch-commands"),
 		environmentalVariables: cfg.GetStringSlice("env-variables"),
-	}, nil
+	}
+	parseVariables(&configs)
+	parseProtofileOption(&configs, cfg.GetStringSlice("files"))
+	return configs, nil
+}
+
+func parseProtofileOption(config *Config, protoFiles []string) {
+	for _, file := range protoFiles {
+		protoFile := strings.SplitN(file, "->", 2)
+		switch len(protoFile) == 1 {
+		case true:
+			protoFile = append(protoFile, config.output)
+		}
+		config.protoFiles = append(config.protoFiles, File{
+			name:        protoFile[0],
+			destination: fillVariablePlaceHolders(protoFile[1]),
+		})
+	}
 }
 
 func executeCommands(commands []string) {
