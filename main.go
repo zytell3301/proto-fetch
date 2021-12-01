@@ -24,6 +24,11 @@ type Config struct {
 	environmentalVariables []string
 }
 
+type File struct {
+	name        string
+	destination string
+}
+
 var environmentalVariables map[string]string
 
 func main() {
