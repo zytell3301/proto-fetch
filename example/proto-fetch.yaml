@@ -1,0 +1,18 @@
+base-url: github.com
+repository-owner: zytell3301
+repository: proto-test-repo
+output-dir: $PATH
+# auth-token:
+files:
+  - test1.proto
+  - test2.proto->$FIRST_PATH
+  - test3.proto->$SECOND_PATH
+  - ./test/test12.proto
+before-fetch-commands:
+  - echo $FIRST_PATH=$SECOND_PATH
+after-fetch-commands:
+  - echo $RK
+env-variables:
+  - $FIRST_PATH=./naser/yaser/
+  - $SECOND_PATH=./hadi/shaharm/
+  - $PATH=./api/protofiles/
