@@ -11,7 +11,7 @@ between backend and android application. With proto fetch you can:
 <li>complete support of github and other git based services</li>
 <li>support of after fetch and before fetch commands</li>
 <li>support of environmental variables in output directory or after and before fetch commands</li>
-
+<br />
 Fore more information checkout this link: [https://medium.com/namely-labs/how-we-build-grpc-services-at-namely-52a3ae9e7c35#a944](https://medium.com/namely-labs/how-we-build-grpc-services-at-namely-52a3ae9e7c35#a944)
 
 # Why proto fetch?
