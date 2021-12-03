@@ -1,6 +1,6 @@
 base-url: github.com
 repository-owner: zytell3301
-repository: proto-test-repo
+repository: proto-fetch-test
 output-dir: $PATH
 # auth-token:
 files:
