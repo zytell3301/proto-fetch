@@ -92,7 +92,7 @@ func loadConfigs() (Config, error) {
 		return Config{}, err
 	}
 
-	configs := Config {
+	configs := Config{
 		baseurl:                cfg.GetString("base-url"),
 		owner:                  cfg.GetString("repository-owner"),
 		repository:             cfg.GetString("repository"),
@@ -126,14 +126,15 @@ func executeCommands(commands []string) {
 		cmd = fillVariablePlaceHolders(cmd)
 		command := strings.SplitN(cmd, " ", 2)
 		out := make([]byte, 0)
+		var err error
 		switch len(command) == 1 {
 		case true:
-			out, _ = exec.Command(command[0]).Output()
+			out, err = exec.Command(command[0]).Output()
 			break
 		default:
-			out, _ = exec.Command(command[0], command[1]).Output()
+			out, err = exec.Command(command[0], command[1]).Output()
 		}
-		fmt.Println(string(out))
+		fmt.Println(string(out),err)
 	}
 }
 
