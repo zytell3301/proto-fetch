@@ -124,7 +124,7 @@ func parseProtofileOption(config *Config, protoFiles []string) {
 func executeCommands(commands []string) {
 	for _, cmd := range commands {
 		cmd = fillVariablePlaceHolders(cmd)
-		command := strings.SplitN(cmd, " ", 2)
+		command := strings.Split(cmd, " ")
 		out := make([]byte, 0)
 		var err error
 		switch len(command) == 1 {
@@ -132,7 +132,7 @@ func executeCommands(commands []string) {
 			out, err = exec.Command(command[0]).Output()
 			break
 		default:
-			out, err = exec.Command(command[0], command[1]).Output()
+			out, err = exec.Command(command[0], command[1:]...).Output()
 		}
 		switch err != nil {
 		case true:
