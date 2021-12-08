@@ -134,7 +134,13 @@ func executeCommands(commands []string) {
 		default:
 			out, err = exec.Command(command[0], command[1]).Output()
 		}
-		fmt.Println(string(out),err)
+		switch err != nil {
+		case true:
+			fmt.Println(string(out),err)
+			break
+		default:
+			fmt.Println(string(out))
+		}
 	}
 }
 
