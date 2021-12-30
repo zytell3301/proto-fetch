@@ -126,8 +126,8 @@ func executeCommands(commands []string) {
 		cmd = fillVariablePlaceHolders(cmd)
 		out := make([]byte, 0)
 		var err error
-		command := exec.Command("sh", "-c", "\""+cmd+"\"")
-		err = command.Run()
+		command := exec.Command("sh", "-c", cmd)
+		out,err = command.CombinedOutput()
 		switch err != nil {
 		case true:
 			fmt.Println(string(out), err)
